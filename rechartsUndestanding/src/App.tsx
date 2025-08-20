@@ -1,18 +1,19 @@
 import ReChart from "./ReChart";
 import { addYearsToDate, yearDifferenceFraction } from "./helpers/projections";
+import { baseLineConditions } from "./data/mockData";
+import { yearByYear } from "./helpers/yearByYearProjection";
+import { simulateYears } from "./helpers/simulatonHelper";
 
 function App() {
-  const today = new Date();
+  const result = simulateYears(baseLineConditions, 1);
+  console.log("result", result);
   return (
     <>
       <div className="main-container w-screen min-h-screen bg-gray-200 overscroll-none p-4 flex">
         <div className="">
-          <ReChart />
+          <ReChart chartData={simulateYears(baseLineConditions, 20)} />
         </div>
-        <label>retirementage</label>
-        <input type="number" name="retirement-age" id="retirement-age" />
-
-        <div>{addYearsToDate(today, 2).toDateString()}</div>
+        <div className="forumla tech"></div>
       </div>
     </>
   );

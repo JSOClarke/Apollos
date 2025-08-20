@@ -17,16 +17,22 @@ import type {
   FlattenedYearlyProjection,
 } from "./types/types";
 
-export default function ReChart() {
+export default function ReChart({ chartData }) {
   const barRadius: [number, number, number, number] = [5, 5, 0, 0];
 
-  const flattenedData: FlattenedYearlyProjection[] = yearlyProjection.map(
-    (y) => ({
+  console.log("chartData", chartData);
+
+  const flattenedData: FlattenedYearlyProjection[] = chartData.map(
+    (y: YearlyProjection) => ({
       year: y.year,
       totalIncome: y.incomeBreakdown.reduce((sum, i) => sum + i.amount, 0),
       totalExpenses: y.expenseBreakdown.reduce((sum, i) => sum + i.amount, 0),
       totalAssets: y.assets.reduce((sum, i) => sum + i.amount, 0),
       totalLiabilities: y.liabilities.reduce((sum, i) => sum + i.amount, 0),
+      totalPassiveIncome: y.passiveIncomes.reduce(
+        (sum, i) => sum + i.amount,
+        0
+      ),
       milestones: y.milestones,
     })
   );
@@ -51,7 +57,7 @@ export default function ReChart() {
           stackId={"a"}
         />
         <Bar
-          dataKey="totalExpenses"
+          dataKey="totalPassiveIncome"
           radius={barRadius}
           fill={chartConstants[1].color}
           barSize={30}

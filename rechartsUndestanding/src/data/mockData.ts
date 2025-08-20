@@ -1,4 +1,8 @@
-import type { YearlyProjection } from "../types/types";
+import type {
+  BaseLineConditions,
+  YearlyProjection,
+  Priority,
+} from "../types/types";
 
 export const yearlyProjection: YearlyProjection[] = [
   {
@@ -536,3 +540,31 @@ export const yearlyProjection: YearlyProjection[] = [
     ],
   },
 ];
+
+export const baseLineConditions: BaseLineConditions = {
+  incomes: [{ name: "Salary", amount: 20000, frequency: "annual", id: 1 }],
+  expenses: [{ name: "Rent", amount: 30000, frequency: "annual", id: 1 }],
+  assets: [
+    {
+      name: "Stocks",
+      amount: 70000,
+      type: "investment",
+      growthRate: 0.07,
+      id: 1,
+    },
+    { name: "Savings", amount: 40000, type: "cash", id: 2, yieldRate: 0.02 },
+  ],
+  liabilities: [
+    {
+      name: "Mortgage",
+      amount: 0,
+      type: "loan",
+      interestRate: 0,
+      id: 1,
+      annualRepayment: 0,
+    },
+  ],
+};
+
+export const deficitPriority: Priority[] = [{ assetId: 2 }, { assetId: 1 }]; // savings first then stocks
+export const surplusPriority: Priority[] = [{ assetId: 1 }, { assetId: 2 }]; // stocks first then savings

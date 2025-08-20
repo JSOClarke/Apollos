@@ -19,4 +19,9 @@ export const chartConstants = [
     label: "Milestones",
     color: "#FFD8A8", // pastel orange / peach
   },
+  {
+    key: "totalPassiveIncome",
+    label: "Total Passive Income",
+    color: "#FFD8A8", // pastel orange / peach
+  },
 ];
