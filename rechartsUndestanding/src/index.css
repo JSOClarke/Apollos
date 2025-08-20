@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+/* index.css or globals.css */
+html,
+body {
+  @apply bg-gray-200 overscroll-none;
+  margin: 0;
+  height: 100%;
+}
