@@ -90,9 +90,11 @@ export type YearlyProjection = {
   assets: Asset[];
   liabilities: Liability[];
   milestones?: Milestone[];
-  withdrawls: Withdrawl[];
-  passiveIncomes: PassiveIncome[];
-  contributions: Contribution[];
+  withdrawalHistory: WithdrawlHistory[];
+  passiveIncomesHistory: PassiveIncomeHistory[];
+  contributionsHistory: ContributionHistory[];
+  surplusHistory: SurplusHistory[];
+  growthHistory: GrowthHistory[];
 };
 // The shape of your flattened yearly projection
 export interface FlattenedYearlyProjection {

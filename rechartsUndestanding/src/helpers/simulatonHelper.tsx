@@ -20,9 +20,11 @@ export function simulateYears(
       expenseBreakdown: structuredClone(currentBaseline.expenses),
       assets: structuredClone(result.updatedAssets),
       liabilities: structuredClone(currentBaseline.liabilities),
-      contributions: structuredClone(result.contributionsHistory),
-      passiveIncomes: structuredClone(result.passiveIncomesHistory),
-      withdrawls: structuredClone(result.withdrawalsHistory),
+      contributionsHistory: structuredClone(result.contributionsHistory),
+      passiveIncomesHistory: structuredClone(result.passiveIncomesHistory),
+      withdrawalHistory: structuredClone(result.withdrawalsHistory),
+      surplusHistory: structuredClone(result.surplusesHistory),
+      growthHistory: structuredClone(result.growthHistory),
       // milestones can be added if needed
     };
 

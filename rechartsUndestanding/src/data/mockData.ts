@@ -542,17 +542,17 @@ export const yearlyProjection: YearlyProjection[] = [
 ];
 
 export const baseLineConditions: BaseLineConditions = {
-  incomes: [{ name: "Salary", amount: 20000, frequency: "annual", id: 1 }],
-  expenses: [{ name: "Rent", amount: 30000, frequency: "annual", id: 1 }],
+  incomes: [{ name: "Salary", amount: 14000, frequency: "annual", id: 1 }],
+  expenses: [{ name: "Rent", amount: 10000, frequency: "annual", id: 1 }],
   assets: [
     {
       name: "Stocks",
-      amount: 70000,
+      amount: 30000,
       type: "investment",
       growthRate: 0.07,
       id: 1,
     },
-    { name: "Savings", amount: 40000, type: "cash", id: 2, yieldRate: 0.02 },
+    { name: "Savings", amount: 30000, type: "cash", id: 2, yieldRate: 0.02 },
   ],
   liabilities: [
     {

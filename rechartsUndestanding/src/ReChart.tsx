@@ -29,7 +29,7 @@ export default function ReChart({ chartData }) {
       totalExpenses: y.expenseBreakdown.reduce((sum, i) => sum + i.amount, 0),
       totalAssets: y.assets.reduce((sum, i) => sum + i.amount, 0),
       totalLiabilities: y.liabilities.reduce((sum, i) => sum + i.amount, 0),
-      totalPassiveIncome: y.passiveIncomes.reduce(
+      totalPassiveIncome: y.passiveIncomesHistory.reduce(
         (sum, i) => sum + i.amount,
         0
       ),
