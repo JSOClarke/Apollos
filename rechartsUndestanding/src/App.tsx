@@ -19,20 +19,36 @@ function App() {
     yearlyProjectionData[0].year
   );
 
+  const [selectedGraphType, setSelectedGraphType] = useState<number>(1);
   return (
     <>
       <div className="main-container w-screen min-h-screen bg-gray-200 overscroll-none p-4 flex flex-col gap-2">
         <div className="projections-details  w-full flex flex-1 border border-yellow-200 gap-2">
-          <div className="bg-white rounded-xl w-[80%] p-2  ">
-            <SankeyRechart
-              yearlyProjectionData={yearlyProjectionData}
-              yearSelected={yearSelected}
-            />
-            {/* <ReChart
-              yearlyProjectionData={yearlyProjectionData}
-              setYearSelected={setYearSelected}
-              yearSelected={yearSelected}
-            /> */}
+          <div className="bg-white rounded-xl w-[80%] p-4">
+            <div className="graph-toggle">
+              <select
+                name="graph-select"
+                id="graph-select"
+                value={selectedGraphType}
+                onChange={(e) => setSelectedGraphType(Number(e.target.value))}
+              >
+                <option value="1">Sankey</option>
+                <option value="2">BarChart</option>
+              </select>
+            </div>
+            {selectedGraphType === 1 ? (
+              <SankeyRechart
+                yearlyProjectionData={yearlyProjectionData}
+                yearSelected={yearSelected}
+              />
+            ) : null}
+            {selectedGraphType === 2 ? (
+              <ReChart
+                yearlyProjectionData={yearlyProjectionData}
+                setYearSelected={setYearSelected}
+                yearSelected={yearSelected}
+              />
+            ) : null}
           </div>
           <div className="sidebar flex-1">
             <Sidebar
