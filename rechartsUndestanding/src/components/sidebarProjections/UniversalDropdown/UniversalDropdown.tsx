@@ -31,13 +31,15 @@ export default function UniversalDropdown({
         className="title-container flex items-center justify-between w-full"
       >
         <div className="title-text text-gray-500">{title}</div>
-        {!isDropdownOpen ? (
-          <div className="title-value text-gray-500">
-            {formatCurrency(titleValue)}
+        <div className="value-chevron flex">
+          {!isDropdownOpen ? (
+            <div className="title-value text-gray-500">
+              {formatCurrency(titleValue)}
+            </div>
+          ) : null}
+          <div className="chevron text-gray-500">
+            {isDropdownOpen ? <ChevronUp /> : <ChevronDown />}
           </div>
-        ) : null}
-        <div className="chevron text-gray-500">
-          {isDropdownOpen ? <ChevronUp /> : <ChevronDown />}
         </div>
       </button>
       <div className="dropdownItems">{isDropdownOpen ? children : null}</div>
