@@ -12,9 +12,18 @@ import { surplusPriority, deficitPriority } from "../data/mockData";
 
 export function yearByYear(
   baseLineConditions: BaseLineConditions,
+  currentYear: number,
   fractionOfYear = 1 // defaults to a full year
 ) {
   const { incomes, expenses, assets, liabilities } = baseLineConditions;
+
+  // 0️⃣ Filter incomes/expenses active this year
+  const activeIncomes = incomes.filter(
+    (i) => currentYear >= i.startYear && currentYear <= i.endYear
+  );
+  const activeExpenses = expenses.filter(
+    (e) => currentYear >= e.startYear && currentYear <= e.endYear
+  );
 
   let updatedAssets = [...assets];
   let updatedLiabilities = [...liabilities];
@@ -28,11 +37,11 @@ export function yearByYear(
   let liabilityPaymentsHistory: LiabilityPaymentHistory[] = [];
 
   // 1️⃣ Scale total income and expenses by fraction
-  const totalIncome = incomes.reduce(
+  const totalIncome = activeIncomes.reduce(
     (sum, i) => sum + i.amount * fractionOfYear,
     0
   );
-  const totalExpenses = expenses.reduce(
+  const totalExpenses = activeExpenses.reduce(
     (sum, i) => sum + i.amount * fractionOfYear,
     0
   );
@@ -145,7 +154,7 @@ export function yearByYear(
     }
   }
 
-  // 6️⃣ Deficit (same as before)
+  // 6️⃣ Deficit
   if (remainingCashFlow < 0) {
     let deficit = Math.abs(remainingCashFlow);
     for (const dp of deficitPriority) {
@@ -180,5 +189,7 @@ export function yearByYear(
     surplusesHistory,
     growthHistory,
     remainingCashFlow,
+    activeIncomes,
+    activeExpenses,
   };
 }

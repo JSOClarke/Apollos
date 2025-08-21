@@ -7,10 +7,33 @@ import type {
 } from "../types/types";
 
 export const baseLineConditions: BaseLineConditions = {
-  incomes: [{ name: "Salary", amount: 14000, frequency: "annual", id: 1 }],
+  incomes: [
+    {
+      name: "Salary",
+      amount: 14000,
+      frequency: "annual",
+      id: 1,
+      startYear: 2025,
+      endYear: 2065,
+    },
+  ],
   expenses: [
-    { name: "Rent", amount: 10000, frequency: "annual", id: 1 },
-    { name: "Holiday", amount: 1000, frequency: "annual", id: 2 },
+    {
+      name: "Rent",
+      amount: 10000,
+      frequency: "annual",
+      id: 1,
+      startYear: 2025,
+      endYear: 2065,
+    },
+    {
+      name: "Holiday",
+      amount: 1000,
+      frequency: "annual",
+      id: 2,
+      startYear: 2025,
+      endYear: 2062,
+    },
   ],
   assets: [
     {

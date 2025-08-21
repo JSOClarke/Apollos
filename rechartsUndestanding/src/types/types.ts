@@ -3,6 +3,8 @@ export type Incomes = {
   id: number;
   name: string;
   amount: number;
+  startYear: number;
+  endYear: number;
   frequency: "monthly" | "annual";
 };
 
@@ -11,6 +13,8 @@ export type Expenses = {
   id: number;
   name: string;
   amount: number;
+  startYear: number;
+  endYear: number;
   frequency: "monthly" | "annual";
 };
 
