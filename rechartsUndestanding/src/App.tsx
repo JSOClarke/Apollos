@@ -11,7 +11,7 @@ function App() {
     <>
       <div className="main-container w-screen min-h-screen bg-gray-200 overscroll-none p-4 flex">
         <div className="">
-          <ReChart chartData={simulateYears(baseLineConditions, 20)} />
+          <ReChart chartData={simulateYears(baseLineConditions, 35)} />
         </div>
         <div className="forumla tech"></div>
       </div>

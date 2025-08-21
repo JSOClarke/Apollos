@@ -38,11 +38,20 @@ export default function ReChart({ chartData }) {
   );
 
   return (
-    <div className=" bg-white rounded-xl p-2">
-      <BarChart width={1000} height={500} data={flattenedData} barGap={0}>
+    <div className=" bg-white rounded-xl p-10 border border-red-500">
+      <BarChart
+        width={1200}
+        height={500}
+        data={flattenedData}
+        barGap={0}
+        margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+      >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="year" />
-        <YAxis />
+        <YAxis
+          width={100}
+          tickFormatter={(value: number) => `£${value.toLocaleString("en-GB")}`}
+        />
 
         <Tooltip
           content={(props: TooltipContentProps<number, string>) => (
