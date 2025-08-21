@@ -6,6 +6,7 @@ import { userInformation } from "./data/mockData";
 import { getAge } from "./helpers/projections";
 import { MEANDEATHAGE } from "./constants/chartConstants";
 import { useState } from "react";
+import SankeyRechart from "./components/cashflowRechart/SankeyRechart";
 
 function App() {
   const age = getAge(userInformation.dob);
@@ -23,11 +24,15 @@ function App() {
       <div className="main-container w-screen min-h-screen bg-gray-200 overscroll-none p-4 flex flex-col gap-2">
         <div className="projections-details  w-full flex flex-1 border border-yellow-200 gap-2">
           <div className="bg-white rounded-xl w-[80%] p-2  ">
-            <ReChart
+            <SankeyRechart
+              yearlyProjectionData={yearlyProjectionData}
+              yearSelected={yearSelected}
+            />
+            {/* <ReChart
               yearlyProjectionData={yearlyProjectionData}
               setYearSelected={setYearSelected}
               yearSelected={yearSelected}
-            />
+            /> */}
           </div>
           <div className="sidebar flex-1">
             <Sidebar

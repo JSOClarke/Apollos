@@ -119,3 +119,18 @@ export interface UserInformation {
   dob: Date;
   name: string;
 }
+export interface SankeyNode {
+  name: string;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  color?: string;
+}
+
+export interface SankeyLink {
+  source: number | SankeyNode;
+  target: number | SankeyNode;
+  value: number;
+  color?: string;
+}

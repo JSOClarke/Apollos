@@ -14,7 +14,7 @@ import {
 import CustomChartToolTip from "./components/customToolTip/CustomChartToolTip";
 import { chartConstants } from "./constants/chartConstants";
 
-import { yearlyProjection } from "./data/mockData";
+// import { yearlyProjection } from "./data/mockData";
 import { milestones } from "./data/mockData";
 import type {
   YearlyProjection,

@@ -7,3 +7,7 @@ body {
   margin: 0;
   height: 100%;
 }
+.recharts-wrapper:focus,
+.recharts-wrapper *:focus {
+  outline: none;
+}
