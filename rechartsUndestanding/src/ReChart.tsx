@@ -5,6 +5,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  ResponsiveContainer,
   type TooltipContentProps,
 } from "recharts";
 
@@ -17,12 +18,16 @@ import type {
   FlattenedYearlyProjection,
 } from "./types/types";
 
-export default function ReChart({ chartData }) {
+interface ReChartProps {
+  yearlyProjectionData: YearlyProjection[];
+}
+
+export default function ReChart({ yearlyProjectionData }: ReChartProps) {
   const barRadius: [number, number, number, number] = [5, 5, 0, 0];
 
-  console.log("chartData", chartData);
+  console.log("chartData", yearlyProjectionData);
 
-  const flattenedData: FlattenedYearlyProjection[] = chartData.map(
+  const flattenedData: FlattenedYearlyProjection[] = yearlyProjectionData.map(
     (y: YearlyProjection) => ({
       year: y.year,
       totalIncome: y.incomeBreakdown.reduce((sum, i) => sum + i.amount, 0),
@@ -38,10 +43,8 @@ export default function ReChart({ chartData }) {
   );
 
   return (
-    <div className=" bg-white rounded-xl p-10 border border-red-500">
+    <ResponsiveContainer width={"100%"} height={"100%"}>
       <BarChart
-        width={1200}
-        height={500}
         data={flattenedData}
         barGap={0}
         margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
@@ -73,6 +76,6 @@ export default function ReChart({ chartData }) {
           stackId={"a"}
         />
       </BarChart>
-    </div>
+    </ResponsiveContainer>
   );
 }
