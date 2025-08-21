@@ -10,7 +10,10 @@ import type {
 } from "../types/types";
 import { surplusPriority, deficitPriority } from "../data/mockData";
 
-export function yearByYear(baseLineConditions: BaseLineConditions) {
+export function yearByYear(
+  baseLineConditions: BaseLineConditions,
+  fractionOfYear = 1 // defaults to a full year
+) {
   const { incomes, expenses, assets, liabilities } = baseLineConditions;
 
   let updatedAssets = [...assets];
@@ -24,9 +27,15 @@ export function yearByYear(baseLineConditions: BaseLineConditions) {
   let growthHistory: GrowthHistory[] = [];
   let liabilityPaymentsHistory: LiabilityPaymentHistory[] = [];
 
-  // 1️⃣ Calculate yearly net cashflow
-  const totalIncome = incomes.reduce((sum, i) => sum + i.amount, 0);
-  const totalExpenses = expenses.reduce((sum, i) => sum + i.amount, 0);
+  // 1️⃣ Scale total income and expenses by fraction
+  const totalIncome = incomes.reduce(
+    (sum, i) => sum + i.amount * fractionOfYear,
+    0
+  );
+  const totalExpenses = expenses.reduce(
+    (sum, i) => sum + i.amount * fractionOfYear,
+    0
+  );
   let netCashflow = totalIncome - totalExpenses;
   let remainingCashFlow = netCashflow;
 
@@ -34,18 +43,16 @@ export function yearByYear(baseLineConditions: BaseLineConditions) {
   for (let i = 0; i < updatedLiabilities.length; i++) {
     let liab = updatedLiabilities[i];
 
-    // Interest accrual
-    const interest = liab.amount * (liab.interestRate ?? 0);
+    const interest = liab.amount * ((liab.interestRate ?? 0) * fractionOfYear);
     liab.amount += interest;
 
-    // Scheduled repayment
-    let repayment = Math.min(liab.annualRepayment ?? 0, liab.amount);
+    let repayment = Math.min(
+      (liab.annualRepayment ?? 0) * fractionOfYear,
+      liab.amount
+    );
 
-    // Check if cashflow covers repayment
     if (repayment > remainingCashFlow) {
-      // partial repayment possible, rest becomes deficit later
-      const available = Math.max(0, remainingCashFlow);
-      repayment = available;
+      repayment = Math.max(0, remainingCashFlow);
     }
 
     liab.amount -= repayment;
@@ -60,12 +67,12 @@ export function yearByYear(baseLineConditions: BaseLineConditions) {
     });
   }
 
-  // 2️⃣ Apply monthly contributions
+  // 2️⃣ Apply contributions scaled by fraction
   for (const asset of updatedAssets) {
     if (!asset.intendedMonthlyContribution || remainingCashFlow <= 0) continue;
 
     const annualContribution = Math.min(
-      asset.intendedMonthlyContribution * 12,
+      asset.intendedMonthlyContribution * 12 * fractionOfYear,
       remainingCashFlow
     );
 
@@ -82,22 +89,23 @@ export function yearByYear(baseLineConditions: BaseLineConditions) {
     remainingCashFlow -= annualContribution;
   }
 
-  // 3️⃣ Apply capital growth (capital appreciation)
+  // 3️⃣ Apply growth scaled by fraction
   for (let i = 0; i < updatedAssets.length; i++) {
     if (!updatedAssets[i].growthRate) continue;
-    const growthAmount = updatedAssets[i].amount * updatedAssets[i].growthRate;
+    const growthAmount =
+      updatedAssets[i].amount * updatedAssets[i].growthRate * fractionOfYear;
     updatedAssets[i].amount += growthAmount;
     growthHistory.push({ assetId: updatedAssets[i].id, amount: growthAmount });
   }
 
-  // 4️⃣ Apply passive income (yield)
+  // 4️⃣ Passive income scaled by fraction
   for (let i = 0; i < updatedAssets.length; i++) {
     const asset = updatedAssets[i];
     if (!asset.yieldRate) continue;
 
-    const passiveIncomeValue = asset.amount * asset.yieldRate;
+    const fromAsset = asset.id;
+    const passiveIncomeValue = asset.amount * asset.yieldRate * fractionOfYear;
 
-    // Add passive income to first asset in surplusPriority (usually cash)
     for (const sp of surplusPriority) {
       const index = updatedAssets.findIndex((a) => a.id === sp.assetId);
       if (index === -1) continue;
@@ -107,15 +115,16 @@ export function yearByYear(baseLineConditions: BaseLineConditions) {
         amount: updatedAssets[index].amount + passiveIncomeValue,
       };
       passiveIncomesHistory.push({
-        assetId: updatedAssets[index].id,
+        fromAssetId: fromAsset,
+        toAssetId: updatedAssets[index].id,
         amount: passiveIncomeValue,
       });
 
-      break; // passive income distributed once
+      break;
     }
   }
 
-  // 5️⃣ Handle surplus
+  // 5️⃣ Surplus
   if (remainingCashFlow > 0) {
     for (const sp of surplusPriority) {
       const index = updatedAssets.findIndex((a) => a.id === sp.assetId);
@@ -136,16 +145,14 @@ export function yearByYear(baseLineConditions: BaseLineConditions) {
     }
   }
 
-  // 6️⃣ Handle deficit
+  // 6️⃣ Deficit (same as before)
   if (remainingCashFlow < 0) {
     let deficit = Math.abs(remainingCashFlow);
-
     for (const dp of deficitPriority) {
       const index = updatedAssets.findIndex((a) => a.id === dp.assetId);
       if (index === -1 || deficit <= 0) continue;
 
       const deduction = Math.min(deficit, updatedAssets[index].amount);
-
       updatedAssets[index] = {
         ...updatedAssets[index],
         amount: updatedAssets[index].amount - deduction,
@@ -155,10 +162,11 @@ export function yearByYear(baseLineConditions: BaseLineConditions) {
         assetId: updatedAssets[index].id,
         amount: deduction,
       });
+
       deficit -= deduction;
     }
 
-    remainingCashFlow = -deficit; // if still negative
+    remainingCashFlow = -deficit;
   }
 
   return {

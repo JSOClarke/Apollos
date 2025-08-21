@@ -3,38 +3,66 @@ import { yearByYear } from "./yearByYearProjection";
 
 export function simulateYears(
   baseLineConditions: BaseLineConditions,
-  totalYears: number
+  totalYears: number,
+  startDate: Date = new Date() // defaults to today
 ): YearlyProjection[] {
   const projections: YearlyProjection[] = [];
-
-  // Start with a fresh copy of the baseline for year 1
   let currentBaseline = structuredClone(baseLineConditions);
 
-  for (let year = 1; year <= totalYears; year++) {
-    const result = yearByYear(currentBaseline);
+  const startYear = startDate.getFullYear();
+  const startMonth = startDate.getMonth(); // 0-indexed: Jan = 0
 
-    // Build the yearly projection
-    const yearlyProjection: YearlyProjection = {
-      year,
+  // Calculate fraction of first year remaining
+  const monthsRemaining = 12 - startMonth;
+  const fractionOfYear = monthsRemaining / 12;
+
+  let yearCounter = 1;
+
+  // Partial first year if starting mid-year
+  if (fractionOfYear < 1) {
+    const result = yearByYear(currentBaseline, fractionOfYear);
+
+    projections.push({
+      year: startYear,
       incomeBreakdown: structuredClone(currentBaseline.incomes),
       expenseBreakdown: structuredClone(currentBaseline.expenses),
       assets: structuredClone(result.updatedAssets),
-      liabilities: structuredClone(currentBaseline.liabilities),
+      liabilities: structuredClone(result.updatedLiabilities),
       contributionsHistory: structuredClone(result.contributionsHistory),
       passiveIncomesHistory: structuredClone(result.passiveIncomesHistory),
       withdrawalHistory: structuredClone(result.withdrawalsHistory),
       surplusHistory: structuredClone(result.surplusesHistory),
       growthHistory: structuredClone(result.growthHistory),
-      // milestones can be added if needed
-    };
+    });
 
-    projections.push(yearlyProjection);
-
-    // Update baseline for next year using updated asset values
     currentBaseline.assets = structuredClone(result.updatedAssets);
+    currentBaseline.liabilities = structuredClone(result.updatedLiabilities);
 
-    // If liabilities are included, you would update them similarly
-    currentBaseline.liabilities = structuredClone(currentBaseline.liabilities);
+    yearCounter++;
+  }
+
+  // Full years
+  const remainingFullYears = Math.floor(totalYears - fractionOfYear);
+  for (let i = 0; i < remainingFullYears; i++) {
+    const result = yearByYear(currentBaseline, 1);
+
+    projections.push({
+      year: startYear + yearCounter - 1,
+      incomeBreakdown: structuredClone(currentBaseline.incomes),
+      expenseBreakdown: structuredClone(currentBaseline.expenses),
+      assets: structuredClone(result.updatedAssets),
+      liabilities: structuredClone(result.updatedLiabilities),
+      contributionsHistory: structuredClone(result.contributionsHistory),
+      passiveIncomesHistory: structuredClone(result.passiveIncomesHistory),
+      withdrawalHistory: structuredClone(result.withdrawalsHistory),
+      surplusHistory: structuredClone(result.surplusesHistory),
+      growthHistory: structuredClone(result.growthHistory),
+    });
+
+    currentBaseline.assets = structuredClone(result.updatedAssets);
+    currentBaseline.liabilities = structuredClone(result.updatedLiabilities);
+
+    yearCounter++;
   }
 
   return projections;

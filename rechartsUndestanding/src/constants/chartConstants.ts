@@ -25,3 +25,5 @@ export const chartConstants = [
     color: "#FFD8A8", // pastel orange / peach
   },
 ];
+
+export const MEANDEATHAGE = 85;

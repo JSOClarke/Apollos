@@ -2,6 +2,8 @@ import type {
   BaseLineConditions,
   YearlyProjection,
   Priority,
+  UserInformation,
+  Milestone,
 } from "../types/types";
 
 export const yearlyProjection: YearlyProjection[] = [
@@ -568,3 +570,24 @@ export const baseLineConditions: BaseLineConditions = {
 
 export const deficitPriority: Priority[] = [{ assetId: 2 }, { assetId: 1 }]; // savings first then stocks
 export const surplusPriority: Priority[] = [{ assetId: 1 }, { assetId: 2 }]; // stocks first then savings
+
+export const userInformation: UserInformation = {
+  name: "Jordan Clarke",
+  dob: new Date("2000-05-02"),
+};
+
+export type Milestone = {
+  id: number;
+  name: string;
+  year: number;
+  description?: string;
+};
+
+export const milestones: Milestone[] = [
+  {
+    id: 1,
+    name: "made it nigga",
+    year: 2040,
+    description: "You a bum tho so dont pipe up",
+  },
+];

@@ -2,29 +2,6 @@ import type { TooltipContentProps } from "recharts";
 import type { FlattenedYearlyProjection } from "../../types/types";
 import { chartConstants } from "../../constants/chartConstants";
 
-const TOOLTIPOPT = [
-  {
-    key: "totalIncome",
-    label: "Total Income",
-    color: "red",
-  },
-  {
-    key: "totalExpenses",
-    label: "Total Expenses",
-    color: "blue",
-  },
-  {
-    key: "totalAssets",
-    label: "Total Assets",
-    color: "purple",
-  },
-  {
-    key: "milestones",
-    label: "Milestones",
-    color: "orange",
-  },
-];
-
 export default function CustomChartToolTip({
   active,
   payload,

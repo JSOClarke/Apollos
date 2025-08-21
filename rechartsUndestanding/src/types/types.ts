@@ -78,7 +78,8 @@ export type WithdrawlHistory = {
 };
 
 export type PassiveIncomeHistory = {
-  assetId: number;
+  fromAssetId: number;
+  toAssetId: number;
   amount: number;
 };
 
@@ -112,4 +113,9 @@ export interface BaseLineConditions {
   liabilities: Liability[];
   incomes: Incomes[];
   expenses: Expenses[];
+}
+
+export interface UserInformation {
+  dob: Date;
+  name: string;
 }
